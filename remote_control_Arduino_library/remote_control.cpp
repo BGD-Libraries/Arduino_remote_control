@@ -24,7 +24,7 @@ bool remote_control::keyPressed( Interested_Keys key )
 	}
 	if (millis() - last_rx_time >= 200)
 		m_PressedKeys = 0;
-    return m_PressedKeys & ( 1 << key );
+    return m_PressedKeys & ( (uint64_t)1 << key );
 }
 
 uint8_t  remote_control::Get_CRC8_Check_Sum(uint8_t  *message, uint32_t length, uint8_t CRC8)
