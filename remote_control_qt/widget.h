@@ -20,16 +20,16 @@ public:
     ~Widget();
 
 protected:
-    void keyPressEvent( QKeyEvent* event );
-    void keyReleaseEvent( QKeyEvent* event );
     void ShowText( void );
-    void timerEvent( QTimerEvent *event );
+    void read_data(void);
+    void send_date(void);
 
 private slots:
     void on_openButton_clicked();
     void on_clearButton_clicked();
-    void read_data(void);
-    void send_date(void);
+    void keyPressEvent( QKeyEvent* event );
+    void keyReleaseEvent( QKeyEvent* event );
+    void timerEvent( QTimerEvent *event );
 
 private:
     Ui::Widget *ui;
@@ -85,20 +85,11 @@ private:
         KEY_RIGHT,
     };
 
-    inline void SaveKeyPressed( Interested_Keys key )
-    {
-        m_PressedKeys |= ( 1 << key );
-    }
-    inline void SaveKeyReleased( Interested_Keys key )
-    {
-        m_PressedKeys &= ~( 1 << key );
-    }
-    inline bool KeyPressed( Interested_Keys key )
-    {
-        return m_PressedKeys & ( 1 << key );
-    }
+    inline void SaveKeyPressed( Interested_Keys key );
+    inline void SaveKeyReleased( Interested_Keys key );
+    inline bool KeyPressed( Interested_Keys key );
 
-    quint64      m_PressedKeys;
+    quint64      m_PressedKeys = 0;
     QList<int>   m_KeyPressedList;
     bool         SerialStateOn = false;
     int          m_SerialTimerId;

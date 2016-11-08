@@ -147,7 +147,7 @@ void Widget::on_openButton_clicked()
         SerialStateOn = false;
     }
 }
-/*---------------------------------------------------------------------------*/
+/*----键盘按下事件-------------------------------------------------------------------*/
 void Widget::keyPressEvent( QKeyEvent* event )
 {
     if (!event->isAutoRepeat()) {
@@ -208,7 +208,7 @@ void Widget::keyPressEvent( QKeyEvent* event )
         qDebug() << tr( "The key %1 pressed." ).arg( event->key( ) );
     }
 }
-/*---------------------------------------------------------------------------*/
+/*-----键盘释放事件------------------------------------------------------------------*/
 void Widget::keyReleaseEvent( QKeyEvent* event )
 {
     if (!event->isAutoRepeat()) {
@@ -271,7 +271,7 @@ void Widget::keyReleaseEvent( QKeyEvent* event )
         qDebug() << tr( "The key %1 release." ).arg( event->key( ) );
     }
 }
-/*---------------------------------------------------------------------------*/
+/*-----显示按键-----------------------------------------------------------------*/
 void Widget::ShowText( void )
 {
     m_ShowText.clear();
@@ -298,7 +298,8 @@ void Widget::ShowText( void )
     ui->key_textBrowser->clear();
     ui->key_textBrowser->append(m_ShowText);
     if (SerialStateOn)
-        setFocus();
+        setFocus();  //锁定焦点在主窗口
+    qDebug() << tr( "m_PressedKeys =%1" ).arg( m_PressedKeys );
     //update( );
 }
 /*-------------------------------------------------------------------------------*/
@@ -323,4 +324,17 @@ void Widget::send_date(void)
     if (SerialStateOn) {
         serial->write((char *)&tx_data, sizeof(tx_data));
     }
+}
+/*--------------------------------------------------------------------------------*/
+inline void Widget::SaveKeyPressed( Interested_Keys key )
+{
+    m_PressedKeys |= ( (quint64)1 << key );
+}
+inline void Widget::SaveKeyReleased( Interested_Keys key )
+{
+    m_PressedKeys &= ~( (quint64)1 << key );
+}
+inline bool Widget::KeyPressed( Interested_Keys key )
+{
+    return m_PressedKeys & ( (quint64)1 << key );
 }
