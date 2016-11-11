@@ -21,7 +21,7 @@ Widget::Widget(QWidget *parent) :
     //设置波特率下拉菜单默认显示第三项
     //ui->BaudBox->setCurrentIndex(3);
     //启用定时器
-    m_SerialTimerId = startTimer(15);
+    m_SerialTimerId = startTimer(20);
     qDebug() << tr("界面设定成功！");
 }
 
